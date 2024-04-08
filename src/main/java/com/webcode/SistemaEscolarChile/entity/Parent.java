@@ -1,11 +1,11 @@
 package com.webcode.SistemaEscolarChile.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "students")
-public class Student {
+@Table(name = "parents")
+public class Parent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,25 +20,20 @@ public class Student {
     @Column(name = "dni")
     private String dni;
 
-    @Column(name = "birth_date_day")
-    private Date birthday;
-
-    @ManyToOne(fetch = FetchType.LAZY) // Un estudiante tiene un padre
-    @JoinColumn(name = "parent_id")
-    private Parent parent;
+    @OneToMany(mappedBy = "parent") // Un padre puede tener varios estudiantes
+    private List<Student> students;
 
     // ... (getters and setters)
 
 
-    public Student() {
+    public Parent() {
     }
 
-    public Student(String name, String lastName, String dni, Date birthday, Parent parent) {
+    public Parent(String name, String lastName, String dni, List<Student> students) {
         this.name = name;
         this.lastName = lastName;
         this.dni = dni;
-        this.birthday = birthday;
-        this.parent = parent;
+        this.students = students;
     }
 
     public int getId() {
@@ -73,31 +68,22 @@ public class Student {
         this.dni = dni;
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public List<Student> getStudents() {
+        return students;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public Parent getParent() {
-        return parent;
-    }
-
-    public void setParent(Parent parent) {
-        this.parent = parent;
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Parent{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", dni='" + dni + '\'' +
-                ", birthday=" + birthday +
-                ", parent=" + parent +
+                ", students=" + students +
                 '}';
     }
 }
